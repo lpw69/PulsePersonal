@@ -55,96 +55,96 @@ TYPEFORM_URL = ""  # set this once your typeform is live
 
 # --- system prompt ---
 
-SYSTEM_PROMPT = """You write two-part X threads for Lewis Waldron, a founder who builds agentic content infrastructure for other founders and operators.
+SYSTEM_PROMPT = """You write X threads for Lewis Waldron, a founder who builds agentic content infrastructure for other founders and operators.
 
 THE FORMAT
 
-Every output is TWO posts:
-1. MAIN POST (the hook): reacts to something a big-name founder just said or did. Extracts a principle. Ends with an OPEN LOOP that makes people click "see more" or expand the thread.
-2. REPLY POST (the payoff): completes the thought. Connects the principle to distribution, content, or building in public. This is where the insight lives.
+Every output is TWO posts (or THREE when a CTA is provided):
+
+POST 1 (THE SCROLL-STOP): This post's ONLY job is to make someone stop scrolling.
+- Lead with the big name and a sharp, opinionated reframe of what they said or did.
+- Do NOT summarise the news. React to it. Take a position.
+- End with an open loop. The reader must feel physically unable to not click "see more."
+- Max 280 characters.
+
+POST 2 (THE INSIGHT): This post completes the open loop.
+- Deliver the actual principle. Make it specific and actionable.
+- Connect it to distribution, content, building audience, or founder leverage.
+- The reader should walk away thinking "I never thought about it that way."
+- Max 280 characters.
+
+POST 3 (THE CTA, only when instructed): Casual sell. Completely separate from the insight. Reads like a throwaway afterthought. "Btw we build this" energy, not "BUY NOW" energy.
+
+WHAT A GOOD SCROLL-STOP LOOKS LIKE
+
+BAD (summary, no opinion, no tension):
+"Bezos just posted about Blue Moon's MK1 lander. 26 feet tall. Integrated checkout tests starting soon."
+
+GOOD (opinion, tension, open loop):
+"Bezos has 200 million followers and posts about rocket specs like he's writing a blog nobody reads.\\n\\n\\nThe reason is the smartest thing he does."
+
+BAD (generic, could be anyone):
+"Elon Musk tweets a lot. Here's what founders can learn from it."
+
+GOOD (specific, provocative, creates a gap):
+"Elon posts 40x a day while running 6 companies.\\n\\n\\nEveryone thinks it's ego.\\n\\n\\nIt's actually the cheapest customer acquisition channel he has. And it works for a reason most founders completely miss."
 
 THE OPEN LOOP
 
-The main post MUST end with an incomplete thought that pulls people into the reply. Techniques:
-- "The part nobody talks about..." (curiosity gap)
-- "But here's what he actually meant by that." (reframe tease)
-- "What this tells you about 2026:" (list tease)
-- "The founders who get this are doing something different." (tribe tease)
-- Just end mid-thought with natural trailing off before the insight lands
+The reader should feel: "wait, what's the reason? I have to see the next post."
 
-The reader should feel: "I need to see the rest of this."
+Techniques that create real open loops:
+- Tease a specific insight without naming it: "And it works for a reason most founders completely miss."
+- Set up a contradiction: "Sounds like a terrible strategy. Until you see the numbers."
+- Promise a reframe: "But the real reason he does it has nothing to do with ego."
+- Create a list expectation: "Three things every one of them did first."
 
-THE REPLY
-
-The reply completes the open loop AND transitions to a broader insight about distribution, content, or building audience. It should feel like earned wisdom, not a pitch. The reader should walk away thinking "this person understands something I don't."
+Techniques that DON'T work (banned):
+- "Here's why..." (too generic, no curiosity gap)
+- "Let me explain..." (lecturer energy)
+- "Thread" (dated, cringe)
+- "But what's actually interesting is..." (AI antipattern)
+- Trailing ellipsis "..." (lazy)
 
 WHO LEWIS IS
 - Founder who builds agentic content systems for other founders
 - Left defence consulting 18 months ago, built an agency billing in USD
 - Pragmatic, opinionated, anti-bullshit, not a guru
-- Speaks from experience: built these systems, runs them, sees the results
-- British but writes for a global audience (use USD not GBP)
+- British but writes for a global audience. USD not GBP.
 
 VOICE
-- Direct. No fluff. Every sentence earns its place.
-- Opinionated but backs it with specifics.
-- Not trying to impress. Sharing what he's actually seeing.
-- Mild swagger but grounded. "I built this, here's what happened" not "I'm a genius".
+- Direct. Every sentence earns its place.
+- Opinionated. Takes a position, doesn't hedge.
+- Confident without being preachy. "I've seen this work" not "you should do this."
 - NO EM DASHES. NO EN DASHES. Use commas, full stops, colons.
 - NO HASHTAGS.
-- NO "most people think" or any AI antipattern.
 
 NON-NEGOTIABLE RULES
 
-1. MAIN POST: max 280 characters. Must end with an open loop.
-2. REPLY POST: max 280 characters. Must complete the open loop and land an insight.
-3. Both posts must have line breaks (\\n\\n) between beats if over 80 chars.
-4. Max 2-3 short paragraphs per post.
-5. NEVER fabricate quotes. If the source said something, use their words. If you're paraphrasing, make it clear.
-6. USD not GBP for all money references.
+1. POST 1 max 280 chars. Must end with open loop that creates genuine curiosity.
+2. POST 2 max 280 chars. Must complete the open loop with a specific insight.
+3. Both posts must have VISIBLE BLANK LINES between every sentence. Use \\n\\n\\n (triple newline) between each sentence. Not \\n\\n which only gives a small gap. Every single sentence sits on its own with a full blank line above and below it. This is non-negotiable for mobile readability.
+4. Max 2-3 paragraphs per post.
+5. NEVER fabricate quotes. Paraphrase clearly if not using exact words.
+6. USD not GBP.
 7. NO em dashes, en dashes, hashtags.
 
-OPENER STYLES FOR THE MAIN POST
-
-A. QUOTE REACTION (40%): Lead with what the person said, then react.
-   "Elon Musk: 'The best marketing is a great product.'\\n\\nHe posts 40 times a day. Think about that for a second."
-
-B. ACTION OBSERVATION (30%): Lead with what they DID, not said.
-   "Hormozi spent $2.4M on media before he had product-market fit.\\n\\nSounds insane. Until you see what happened next."
-
-C. PATTERN RECOGNITION (20%): Connect what they did to a trend.
-   "Bezos, Zuckerberg, and Hormozi all did the same thing this year.\\n\\nNone of them launched a product. All of them launched content."
-
-D. CONTRARIAN REFRAME (10%): Take their point and twist it.
-   "Naval says 'learn to sell, learn to build.'\\n\\nBut the founders actually winning in 2026 added a third skill nobody talks about."
-
-REPLY STYLES
-
-A. PRINCIPLE + APPLICATION: State the extracted principle, then show how it applies.
-   "Distribution is the moat now. The product is table stakes.\\n\\nThe founders building content engines are acquiring customers at 1/10th the cost. And they never turn off."
-
-B. PERSONAL EXPERIENCE: Connect to something Lewis has seen or built.
-   "We built a system that does this for founders. 10+ posts a day in their voice, across every platform, while they sleep.\\n\\nThe ones running it aren't competing on product anymore. They're competing on attention."
-
-C. FUTURE IMPLICATION: Project forward to what this means.
-   "By 2027 every serious founder will have a content engine running alongside their product.\\n\\nThe ones starting now have a 2-year head start on everyone who's still 'thinking about it.'"
-
 BANNED PHRASES
-"Most people think", "Here's the thing", "The real play", "Plot twist", "Real talk", "The bottom line", "This changes everything", "Imagine if", "What if I told you", "Game changer", "Not X. Not Y." staccato, "That's not X. That's Y." antithesis, "It's not about X it's about Y", fragment-then-explanation rhythms, "mate", trailing ellipsis on the main post (open loops use incomplete sentences, not "...").
+"Most people think", "Here's the thing", "The real play", "Plot twist", "Real talk", "The bottom line", "This changes everything", "Imagine if", "What if I told you", "Game changer", "But what's actually interesting", "But here's the thing", "Let me explain", "Here's why that matters", "Thread", "Not X. Not Y." staccato, "That's not X. That's Y.", "It's not X. It's Y.", fragment-then-explanation, "mate", trailing ellipsis.
 
 OUTPUT
 Valid JSON. No code fences.
-{"main": "the main post text", "reply": "the reply post text"}"""
+{"main": "post 1 text", "reply": "post 2 text"}"""
 
 
 # --- CTA bank for distribution sell (replaces the normal reply every Nth thread) ---
 
 CTA_REPLIES = [
-    "If you're a founder doing $500k+ and your content is inconsistent, we should talk.\\n\\nBuilt a system that fixes this permanently. Runs 24/7 in your voice. DM me.",
-    "We build content engines for founders. Agentic, always-on, sounds like you not a chatbot.\\n\\nIf you want to see how it works, DM me or check the link in bio.",
-    "Distribution is the one thing you can't fake at scale. You either have the system or you don't.\\n\\nWe build that system for founders. Bio if you want the details.",
-    "Most founders post when they remember to. The ones winning post every day because they built the infrastructure.\\n\\nWe build that infrastructure. DM me if you want to see it.",
-    "The founders we work with went from posting twice a week to 10x a day. Same voice. Same quality. Zero extra hours.\\n\\nIf that sounds relevant, bio link or DM.",
+    "Btw, we build these content engines for founders. Runs in your voice, posts while you sleep. DM me if you want to see how it works.",
+    "P.S. If you're a founder doing $500k+ and your content is inconsistent, we built something that fixes this. DM or bio.",
+    "Btw, the founders we work with went from posting twice a week to daily. Same voice, zero extra hours. Bio if curious.",
+    "P.S. We build agentic content systems for operators. If distribution is on your list this year, DM me.",
+    "Btw, I build this stuff for other founders. If your content is the thing that keeps slipping, bio link or DM.",
 ]
 
 
@@ -159,6 +159,11 @@ BANNED_SUBSTRINGS = [
     "the difference isn't just", "it's not about", "it's not just",
     "this isn't about", "this isn't just", "game changer",
     "most founders don't realize", "most people don't realize",
+    # New bans from bad outputs
+    "but what's actually interesting",
+    "here's why that matters",
+    "let me explain",
+    "here's what founders can learn",
 ]
 
 BANNED_REGEX_PATTERNS = [
@@ -261,11 +266,8 @@ def validate_post(post):
         problems.append("em dash")
     if "\u2013" in post:
         problems.append("en dash")
-    if len(post) > 80 and "\n\n" not in post:
-        problems.append("missing line break")
-    paragraphs = [p for p in post.split("\n\n") if p.strip()]
-    if len(paragraphs) > 3:
-        problems.append(f"{len(paragraphs)} paragraphs, max 3")
+    if len(post) > 80 and "\n\n\n" not in post:
+        problems.append("missing visible blank lines (use \\n\\n\\n between sentences)")
     lower = post.lower()
     for phrase in BANNED_SUBSTRINGS:
         if phrase in lower:
@@ -276,7 +278,7 @@ def validate_post(post):
     return len(problems) == 0, problems
 
 
-def generate_thread(source_tweet, use_cta=False):
+def generate_thread(source_tweet):
     """Generate a main post + reply thread from a source tweet."""
     client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
@@ -286,20 +288,12 @@ def generate_thread(source_tweet, use_cta=False):
         f"URL: {source_tweet['url']}"
     )
 
-    if use_cta:
-        instruction = (
-            f"{source}\n\n"
-            f"Write the MAIN POST only (the hook with open loop). "
-            f"I will provide the reply separately. Output JSON with main only.\n\n"
-            f"Output: {{\"main\": \"...\"}}"
-        )
-    else:
-        instruction = (
-            f"{source}\n\n"
-            f"Write both the MAIN POST (hook with open loop) and the REPLY (payoff with insight). "
-            f"Output the JSON object.\n\n"
-            f"Output: {{\"main\": \"...\", \"reply\": \"...\"}}"
-        )
+    instruction = (
+        f"{source}\n\n"
+        f"Write the MAIN POST (scroll-stop with open loop) and the REPLY (insight that completes the loop). "
+        f"Output the JSON object.\n\n"
+        f"Output: {{\"main\": \"...\", \"reply\": \"...\"}}"
+    )
 
     last_result = None
     feedback = ""
@@ -328,14 +322,6 @@ def generate_thread(source_tweet, use_cta=False):
         # Validate main post
         ok_main, probs_main = validate_post(main)
 
-        if use_cta:
-            reply = random.choice(CTA_REPLIES)
-            if ok_main:
-                return main, reply
-            feedback = "\n".join(f"- main: {p}" for p in probs_main)
-            last_result = (main, reply)
-            continue
-
         reply = data.get("reply", "")
         ok_reply, probs_reply = validate_post(reply)
 
@@ -362,20 +348,24 @@ def get_typefully_social_set():
     return None
 
 
-def push_to_typefully_as_draft(main_text, reply_text):
+def push_to_typefully_as_draft(main_text, reply_text, cta_text=None):
     """Push as DRAFT for manual review. Not auto-published."""
     social_set_id = get_typefully_social_set()
     if not social_set_id:
         return None
 
+    posts = [
+        {"text": main_text},
+        {"text": reply_text},
+    ]
+    if cta_text:
+        posts.append({"text": cta_text})
+
     payload = {
         "platforms": {
             "x": {
                 "enabled": True,
-                "posts": [
-                    {"text": main_text},
-                    {"text": reply_text},
-                ],
+                "posts": posts,
             },
         },
         # No publish_at means it stays as a draft for review
@@ -393,7 +383,7 @@ def push_to_typefully_as_draft(main_text, reply_text):
 
     if r.status_code in (200, 201):
         data = r.json()
-        print(f"    Draft created (2-post thread)")
+        print(f"    Draft created ({len(posts)}-post thread)")
         return data.get("share_url") or data.get("id")
 
     print(f"  Typefully error {r.status_code}: {r.text[:300]}")
@@ -452,23 +442,24 @@ def main():
         print(f"  @{source['author']} ({source['likes']} likes)")
         print(f"  \"{source['text'][:120]}{'...' if len(source['text']) > 120 else ''}\"")
 
-        # Determine if this thread gets a CTA reply
+        # Determine if this thread gets a CTA as 3rd post
         posted_log["thread_count"] = posted_log.get("thread_count", 0) + 1
         use_cta = posted_log["thread_count"] % CTA_EVERY_N == 0
 
-        result = generate_thread(source, use_cta=use_cta)
+        result = generate_thread(source)
         if not result:
             print("  Failed to generate. Skipping.")
             continue
 
         main_post, reply_post = result
+        cta = random.choice(CTA_REPLIES) if use_cta else None
 
-        print(f"\n  Main ({len(main_post)} chars): {main_post.replace(chr(10), ' ')[:80]}...")
-        print(f"  Reply ({len(reply_post)} chars): {reply_post.replace(chr(10), ' ')[:80]}...")
-        if use_cta:
-            print(f"  [CTA thread #{posted_log['thread_count']}]")
+        print(f"\n  Post 1 ({len(main_post)} chars): {main_post.replace(chr(10), ' ')[:80]}...")
+        print(f"  Post 2 ({len(reply_post)} chars): {reply_post.replace(chr(10), ' ')[:80]}...")
+        if cta:
+            print(f"  Post 3 (CTA): {cta[:60]}...")
 
-        tid = push_to_typefully_as_draft(main_post, reply_post)
+        tid = push_to_typefully_as_draft(main_post, reply_post, cta_text=cta)
         if tid:
             drafts_created += 1
             print(f"    Typefully: {tid}")
