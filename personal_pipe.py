@@ -40,6 +40,8 @@ SEED_HANDLES = [
     "dharmesh",
     "levelsio",
     "SahilBloom",
+    "cb_doge",
+    "saylor",
 ]
 NEWS_LOOKBACK_HOURS = 24
 POSTS_PER_RUN       = 3   # generates 3 draft threads per run for you to review
