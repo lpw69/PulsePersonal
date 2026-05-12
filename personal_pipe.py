@@ -47,8 +47,23 @@ MIN_NEWS_LENGTH     = 60
 POSTED_LOG          = "posted_sources.json"
 
 # CTA config
-CTA_EVERY_N = 3  # every 3rd thread gets a distribution sell in the reply
+CTA_EVERY_N = 3
 TYPEFORM_URL = ""  # set this once your typeform is live
+
+def get_cta_link():
+    if TYPEFORM_URL:
+        return TYPEFORM_URL
+    return "Link in bio"
+
+def get_cta_lines():
+    link = get_cta_link()
+    return [
+        f"We build agentic content engines for founders, operators, and athletes.\n\nYour voice. Every platform. Runs while you sleep.\n\nWe onboard 3 new clients per quarter. See if you qualify: {link}",
+        f"We replace entire content teams with AI-native infrastructure that sounds like you, not a chatbot.\n\nCurrently working with founders doing $1M+.\n\nApplications for Q3 are open: {link}",
+        f"Most founders post when they remember to. Our clients post 10x a day in their own voice without lifting a finger.\n\nWe're selective about who we work with. See if you're a fit: {link}",
+        f"Your competitors are building distribution infrastructure right now. The ones who move first win.\n\nWe build that infrastructure for a handful of founders each quarter. See if you qualify: {link}",
+        f"Content on autopilot that actually sounds like a human wrote it. Because one did, once, and now the system knows your voice forever.\n\nWe take on very few clients. Apply here: {link}",
+    ]
 
 
 # --- system prompt ---
@@ -60,8 +75,10 @@ THE FORMAT
 Every output is TWO posts (or THREE when a CTA is provided):
 
 POST 1 (THE SCROLL-STOP): This post's ONLY job is to make someone stop scrolling.
-- Lead with the big name and a sharp, opinionated reframe of what they said or did.
-- Do NOT summarise the news. React to it. Take a position.
+- Lead with DRAMA. "HOLY SHIT.", "This literally just changed everything.", "I can't believe [person] just said this."
+- Hyperbole is not only allowed, it's required. You're competing with 500 other posts in someone's feed. Understatement gets scrolled past.
+- CAPITALISE the dramatic opener when it warrants it.
+- Do NOT summarise the news. React to it with energy. Take a position.
 - End with an open loop. The reader must feel physically unable to not click "see more."
 - Max 280 characters.
 
@@ -137,13 +154,7 @@ Valid JSON. No code fences.
 
 # --- CTA bank for distribution sell (replaces the normal reply every Nth thread) ---
 
-CTA_REPLIES = [
-    "Btw, we build these content engines for founders. Runs in your voice, posts while you sleep. DM me if you want to see how it works.",
-    "P.S. If you're a founder doing $500k+ and your content is inconsistent, we built something that fixes this. DM or bio.",
-    "Btw, the founders we work with went from posting twice a week to daily. Same voice, zero extra hours. Bio if curious.",
-    "P.S. We build agentic content systems for operators. If distribution is on your list this year, DM me.",
-    "Btw, I build this stuff for other founders. If your content is the thing that keeps slipping, bio link or DM.",
-]
+# CTA bank is generated dynamically by get_cta_lines() above
 
 
 # --- banned patterns ---
@@ -177,8 +188,13 @@ BANNED_REGEX_PATTERNS = [
     (r"\bthat'?s\s+not\s+.{2,40}[,.]\s+that'?s\s+", "That's not X. That's Y."),
     (r"\bit'?s\s+not\s+.{2,40}[,.]\s+it'?s\s+", "It's not X. It's Y."),
     (r"\bit'?s\s+not[.]\s+it'?s\s+(about|just|really|actually)", "It's not. It's about Y."),
+    (r"\bisn'?t\s+about\s+.{2,30}[,.]\s+it'?s\s+about", "isn't about X. It's about Y."),
     (r"\b\w+\s+\w+\.\s+that'?s\s+(how|what|why|when|where)\s+", "fragment-then-explanation"),
     (r"\bmate\b", "uses mate"),
+    # Staccato: two consecutive sentences both under 6 words
+    (r"(?<=[.!?])\s+\b(\w+\s+){0,4}\w+[.!?]\s+\b(\w+\s+){0,4}\w+[.!?]", "consecutive short-sentence staccato"),
+    # Pair staccato: two short sentences (2-4 words each) back to back
+    (r"(?:^|[.!?])\s*[A-Z][\w']{0,15}(\s+\w+){1,3}[.!?]\s+[A-Z][\w']{0,15}(\s+\w+){1,3}[.!?]", "pair staccato"),
     (r"\b(on|by|with|for|in|of|to|and|but|or|the|a|an|that|which|from|as|at|into|onto|upon|via|though)\.\s*$",
      "stealth cliffhanger"),
 ]
@@ -490,7 +506,7 @@ def main():
             continue
 
         main_post, reply_post = result
-        cta = random.choice(CTA_REPLIES) if use_cta else None
+        cta = random.choice(get_cta_lines()) if use_cta else None
 
         print(f"\n  Post 1 ({len(main_post)} chars): {main_post.replace(chr(10), ' ')[:80]}...")
         print(f"  Post 2 ({len(reply_post)} chars): {reply_post.replace(chr(10), ' ')[:80]}...")
