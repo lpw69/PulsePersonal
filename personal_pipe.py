@@ -58,11 +58,11 @@ def get_cta_link():
 def get_cta_lines():
     link = get_cta_link()
     return [
-        f"We build agentic content engines for founders, operators, and athletes.\n\nYour voice. Every platform. Runs while you sleep.\n\nWe onboard 3 new clients per quarter. See if you qualify: {link}",
-        f"We replace entire content teams with AI-native infrastructure that sounds like you, not a chatbot.\n\nCurrently working with founders doing $1M+.\n\nApplications for Q3 are open: {link}",
-        f"Most founders post when they remember to. Our clients post 10x a day in their own voice without lifting a finger.\n\nWe're selective about who we work with. See if you're a fit: {link}",
-        f"Your competitors are building distribution infrastructure right now. The ones who move first win.\n\nWe build that infrastructure for a handful of founders each quarter. See if you qualify: {link}",
-        f"Content on autopilot that actually sounds like a human wrote it. Because one did, once, and now the system knows your voice forever.\n\nWe take on very few clients. Apply here: {link}",
+        f"Btw, this is the kind of system we build for founders. Content that runs in your voice, every platform, while you focus on the business.\n\nWe onboard 3 new clients per quarter. See if you qualify: {link}",
+        f"Btw, we build this kind of distribution infrastructure for founders and athletes. Your voice, on autopilot, compounding daily.\n\nApplications for Q3 are open: {link}",
+        f"P.S. This is what we do. We build agentic content engines for founders doing $1M+ who don't have time to post but know they need to.\n\nWe're selective. See if you're a fit: {link}",
+        f"Btw, if you're a founder reading this thinking 'I should be doing more of this', that's literally what we build.\n\nWe take on a handful of clients per quarter. See if you qualify: {link}",
+        f"P.S. We help founders and operators build exactly this kind of presence. Your voice, every day, zero extra hours from you.\n\nNot for everyone. Apply here: {link}",
     ]
 
 
@@ -218,6 +218,12 @@ BANNED_REGEX_PATTERNS = [
     (r"(?:^|[.!?])\s*[A-Z][\w']{0,15}(\s+\w+){1,3}[.!?]\s+[A-Z][\w']{0,15}(\s+\w+){1,3}[.!?]", "pair staccato"),
     (r"\b(on|by|with|for|in|of|to|and|but|or|the|a|an|that|which|from|as|at|into|onto|upon|via|though)\.\s*$",
      "stealth cliffhanger"),
+    # "don't sell X. They sell Y." / "don't X. They Y."
+    (r"\bdon'?t\s+\w+\s+\w+[.]\s+they\s+\w+\s+", "don't X. They Y. antithesis"),
+    # "Not a [noun phrase]. Not a [noun phrase]." consecutive negation
+    (r"\bnot\s+a\s+[\w\s]{2,25}[.]\s+not\s+a\s+", "Not a X. Not a Y. consecutive negation"),
+    # "X hide Y. Z expose Y." parallel structure
+    (r"\b\w[\w\s]{2,20}(hide|conceal|mask|obscure)\w*\s+.{2,20}[.]\s+\w[\w\s]{2,20}(expose|reveal|show|uncover)", "parallel hide/expose structure"),
 ]
 
 
@@ -375,7 +381,7 @@ def generate_thread(source_tweet):
             msg = f"PREVIOUS FAILED:\n{feedback}\n\nRewrite.\n\n" + msg
 
         response = client.messages.create(
-            model="claude-haiku-4-5-20251001",
+            model="claude-sonnet-4-20250514",
             max_tokens=800,
             system=SYSTEM_PROMPT,
             messages=[{"role": "user", "content": msg}],
