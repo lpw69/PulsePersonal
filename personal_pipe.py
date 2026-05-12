@@ -43,7 +43,7 @@ SEED_HANDLES = [
     "chamath",
 ]
 NEWS_LOOKBACK_HOURS = 24
-POSTS_PER_RUN       = 3
+POSTS_PER_RUN       = 5   # 5 per run x 3 runs/day = 15 drafts for review
 MIN_NEWS_LENGTH     = 60
 POSTED_LOG          = "posted_sources.json"
 
