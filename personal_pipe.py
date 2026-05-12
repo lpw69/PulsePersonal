@@ -19,6 +19,7 @@ Required secrets:
 
 import os, re, sys, json, random, datetime, subprocess, requests
 import anthropic
+import feedparser
 
 # --- env ---
 ANTHROPIC_API_KEY       = os.environ["ANTHROPIC_API_KEY"]
@@ -42,12 +43,23 @@ SEED_HANDLES = [
     "chamath",
 ]
 NEWS_LOOKBACK_HOURS = 24
-POSTS_PER_RUN       = 3   # generates 3 draft threads per run for you to review
+POSTS_PER_RUN       = 3
 MIN_NEWS_LENGTH     = 60
 POSTED_LOG          = "posted_sources.json"
 
+# RSS feeds (free, always available, actual news events)
+RSS_FEEDS = [
+    "https://techcrunch.com/feed/",
+    "https://www.theverge.com/rss/index.xml",
+    "https://feeds.arstechnica.com/arstechnica/technology-lab",
+    "https://hnrss.org/best?points=200",           # Hacker News top stories
+    "https://www.wired.com/feed/tag/business/latest/rss",
+    "https://fortune.com/feed/",
+]
+RSS_MAX_AGE_HOURS = 24
+
 # CTA config
-CTA_EVERY_N = 3
+CTA_EVERY_N = 1  # Every post gets a CTA. Lewis reviews drafts so can remove if it doesn't fit.
 TYPEFORM_URL = ""  # set this once your typeform is live
 
 def get_cta_link():
@@ -58,11 +70,11 @@ def get_cta_link():
 def get_cta_lines():
     link = get_cta_link()
     return [
-        f"Btw, this is the kind of system we build for founders. Content that runs in your voice, every platform, while you focus on the business.\n\nWe onboard 3 new clients per quarter. See if you qualify: {link}",
-        f"Btw, we build this kind of distribution infrastructure for founders and athletes. Your voice, on autopilot, compounding daily.\n\nApplications for Q3 are open: {link}",
-        f"P.S. This is what we do. We build agentic content engines for founders doing $1M+ who don't have time to post but know they need to.\n\nWe're selective. See if you're a fit: {link}",
-        f"Btw, if you're a founder reading this thinking 'I should be doing more of this', that's literally what we build.\n\nWe take on a handful of clients per quarter. See if you qualify: {link}",
-        f"P.S. We help founders and operators build exactly this kind of presence. Your voice, every day, zero extra hours from you.\n\nNot for everyone. Apply here: {link}",
+        f"Btw, we build AI-powered content engines for founders. Posts in your voice across X, LinkedIn, and Threads every day while you run the business.\n\nWe onboard 3 clients per quarter. See if you qualify: {link}",
+        f"Btw, we build agentic content systems that post 10x a day in your voice across every platform. You approve the voice once, the engine does the rest.\n\nApplications for Q3 are open: {link}",
+        f"P.S. We build content infrastructure for founders doing $1M+. AI-native, sounds like you, posts daily across X, LinkedIn, Threads while you sleep.\n\nWe're selective. See if you're a fit: {link}",
+        f"Btw, we build the content engine behind founders who post every day without spending a minute on it. Your voice, your platforms, fully automated.\n\nWe take on a handful per quarter. See if you qualify: {link}",
+        f"P.S. We build always-on content machines for founders and athletes. Your voice cloned into an engine that posts across every platform, every day.\n\nNot for everyone. Apply here: {link}",
     ]
 
 
@@ -274,6 +286,49 @@ def fetch_tweets(handles, hours=NEWS_LOOKBACK_HOURS):
     return items
 
 
+def fetch_rss():
+    """Pull recent articles from RSS feeds (free, no API costs)."""
+    cutoff = datetime.datetime.utcnow() - datetime.timedelta(hours=RSS_MAX_AGE_HOURS)
+    all_items = []
+
+    for feed_url in RSS_FEEDS:
+        try:
+            feed = feedparser.parse(feed_url)
+            source_name = feed.feed.get("title", feed_url)[:30]
+
+            for entry in feed.entries[:10]:
+                # Parse published date
+                published = entry.get("published_parsed") or entry.get("updated_parsed")
+                if published:
+                    pub_dt = datetime.datetime(*published[:6])
+                    if pub_dt < cutoff:
+                        continue
+
+                title = entry.get("title", "").strip()
+                summary = entry.get("summary", "").strip()
+                # Strip HTML tags from summary
+                summary = re.sub(r"<[^>]+>", "", summary)[:300]
+                link = entry.get("link", "")
+
+                text = f"{title}. {summary}" if summary else title
+
+                all_items.append({
+                    "id": f"rss_{hash(link) % 10**10}",
+                    "text": text,
+                    "url": link,
+                    "author": source_name,
+                    "likes": 0,  # RSS has no engagement signal, ranked by recency
+                    "type": "rss",
+                })
+
+            print(f"  RSS: {source_name} -> {len([i for i in all_items if source_name in i.get('author', '')])} items")
+        except Exception as e:
+            print(f"  RSS error ({feed_url[:40]}): {e}")
+
+    print(f"  RSS total: {len(all_items)} items")
+    return all_items
+
+
 def normalise(t):
     text = t.get("text") or t.get("fullText") or t.get("full_text") or ""
     return {
@@ -318,7 +373,8 @@ def is_substantive(tweet_text):
 def filter_usable(items, used_ids):
     out = []
     for raw in items:
-        t = normalise(raw)
+        # RSS items are already normalised, Apify items need normalising
+        t = raw if raw.get("type") == "rss" else normalise(raw)
         if not t["id"] or t["id"] in used_ids:
             continue
         if not t["text"] or len(t["text"]) < MIN_NEWS_LENGTH:
@@ -329,8 +385,18 @@ def filter_usable(items, used_ids):
             print(f"  Skipping fortune cookie: \"{t['text'][:80]}...\"")
             continue
         out.append(t)
-    out.sort(key=lambda x: x["likes"], reverse=True)
-    return out
+    # Tweets ranked by likes, RSS by recency (they're already in chronological order)
+    # Mix them: take top tweets by engagement + top RSS by recency
+    tweets = sorted([i for i in out if i.get("type") != "rss"], key=lambda x: x["likes"], reverse=True)
+    rss = [i for i in out if i.get("type") == "rss"]
+    # Interleave: tweet, rss, tweet, rss...
+    merged = []
+    for i in range(max(len(tweets), len(rss))):
+        if i < len(tweets):
+            merged.append(tweets[i])
+        if i < len(rss):
+            merged.append(rss[i])
+    return merged
 
 
 # --- generation ---
@@ -504,13 +570,19 @@ def main():
     posted_log = load_posted_log()
     used_ids = set(posted_log.get("source_ids", []))
 
-    raw = fetch_tweets(SEED_HANDLES)
-    if not raw:
-        print("\nNo tweets returned. Exiting.")
+    # Fetch from both sources
+    raw_tweets = fetch_tweets(SEED_HANDLES)
+    raw_rss = fetch_rss()
+
+    # Combine: Apify tweets get normalised, RSS items already in the right format
+    all_items = raw_tweets + raw_rss
+
+    if not all_items:
+        print("\nNo content from any source. Exiting.")
         sys.exit(0)
 
-    usable = filter_usable(raw, used_ids)
-    print(f"\nUsable: {len(usable)}")
+    usable = filter_usable(all_items, used_ids)
+    print(f"\nUsable: {len(usable)} ({len([i for i in usable if i.get('type') == 'rss'])} from RSS)")
 
     if not usable:
         print("Nothing fresh. Exiting.")
