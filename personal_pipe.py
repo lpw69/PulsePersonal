@@ -31,17 +31,15 @@ SEED_HANDLES = [
     "elonmusk",
     "JeffBezos",
     "AlexHormozi",
-    "GaryVee",
-    "naval",
-    "paulg",
     "sama",
-    "balajis",
+    "paulg",
     "gregisenberg",
-    "dharmesh",
     "levelsio",
-    "SahilBloom",
     "cb_doge",
     "saylor",
+    "jason",
+    "pmarca",
+    "chamath",
 ]
 NEWS_LOOKBACK_HOURS = 24
 POSTS_PER_RUN       = 3   # generates 3 draft threads per run for you to review
@@ -80,14 +78,14 @@ WHAT A GOOD SCROLL-STOP LOOKS LIKE
 BAD (summary, no opinion, no tension):
 "Bezos just posted about Blue Moon's MK1 lander. 26 feet tall. Integrated checkout tests starting soon."
 
-GOOD (opinion, tension, open loop):
-"Bezos has 200 million followers and posts about rocket specs like he's writing a blog nobody reads.\\n\\n\\nThe reason is the smartest thing he does."
+GOOD (opinion, tension, open loop ending in colon):
+"Bezos has 200 million followers and posts about rocket specs like he's writing a blog nobody reads.\\n\\nThe reason is the smartest thing he does:"
 
 BAD (generic, could be anyone):
 "Elon Musk tweets a lot. Here's what founders can learn from it."
 
-GOOD (specific, provocative, creates a gap):
-"Elon posts 40x a day while running 6 companies.\\n\\n\\nEveryone thinks it's ego.\\n\\n\\nIt's actually the cheapest customer acquisition channel he has. And it works for a reason most founders completely miss."
+GOOD (specific, provocative, open loop ending mid-sentence):
+"Elon posts 40x a day while running 6 companies.\\n\\nEveryone thinks it's ego.\\n\\nIt's actually the cheapest customer acquisition channel he has, and it works for a reason most founders completely miss:"
 
 THE OPEN LOOP
 
@@ -121,9 +119,9 @@ VOICE
 
 NON-NEGOTIABLE RULES
 
-1. POST 1 max 280 chars. Must end with open loop that creates genuine curiosity.
+1. POST 1 max 280 chars. Must end with open loop that creates genuine curiosity. POST 1 must NEVER end with a full stop. A full stop signals "I'm done." Hooks must end with a colon, a mid-sentence trail, or "Show more". If it ends in a period, it's not a hook.
 2. POST 2 max 280 chars. Must complete the open loop with a specific insight.
-3. Both posts must have VISIBLE BLANK LINES between every sentence. Use \\n\\n\\n (triple newline) between each sentence. Not \\n\\n which only gives a small gap. Every single sentence sits on its own with a full blank line above and below it. This is non-negotiable for mobile readability.
+3. Both posts must have blank lines between every sentence. Use \\n\\n between each sentence. Every sentence sits on its own line.
 4. Max 2-3 paragraphs per post.
 5. NEVER fabricate quotes. Paraphrase clearly if not using exact words.
 6. USD not GBP.
@@ -164,6 +162,9 @@ BANNED_SUBSTRINGS = [
     "here's why that matters",
     "let me explain",
     "here's what founders can learn",
+    "here's why",
+    "here's how",
+    "here's what this means",
 ]
 
 BANNED_REGEX_PATTERNS = [
@@ -175,6 +176,7 @@ BANNED_REGEX_PATTERNS = [
     (r",\s+not\s+\w+\.\s*$", "antithesis tail"),
     (r"\bthat'?s\s+not\s+.{2,40}[,.]\s+that'?s\s+", "That's not X. That's Y."),
     (r"\bit'?s\s+not\s+.{2,40}[,.]\s+it'?s\s+", "It's not X. It's Y."),
+    (r"\bit'?s\s+not[.]\s+it'?s\s+(about|just|really|actually)", "It's not. It's about Y."),
     (r"\b\w+\s+\w+\.\s+that'?s\s+(how|what|why|when|where)\s+", "fragment-then-explanation"),
     (r"\bmate\b", "uses mate"),
     (r"\b(on|by|with|for|in|of|to|and|but|or|the|a|an|that|which|from|as|at|into|onto|upon|via|though)\.\s*$",
@@ -241,6 +243,35 @@ def normalise(t):
     }
 
 
+def is_substantive(tweet_text):
+    """Filter out fortune-cookie motivational one-liners.
+    Good sources: contain numbers, dollar amounts, company names, announcements, specific claims.
+    Bad sources: generic motivational quotes, one-liners under 100 chars with no specifics."""
+    text = tweet_text.strip()
+
+    # Too short to contain substance
+    if len(text) < 100:
+        # Unless it contains a number or dollar amount (could be a punchy announcement)
+        if not re.search(r'\$[\d,]+|\d{2,}', text):
+            return False
+
+    # Motivational fortune-cookie indicators
+    fortune_cookie_patterns = [
+        r"^(the |a )?(best|only|real|true|greatest|biggest) (way|thing|secret|key|mistake)",
+        r"dreams die",
+        r"(success|failure|greatness|growth) (is|isn't|comes from|requires)",
+        r"^(stop|start|never|always) \w+ing",
+        r"the (hard|easy|simple|real) (truth|part|thing)",
+        r"(most people|99%|everyone) (don't|won't|can't|never)",
+    ]
+    lower = text.lower()
+    for pattern in fortune_cookie_patterns:
+        if re.search(pattern, lower):
+            return False
+
+    return True
+
+
 def filter_usable(items, used_ids):
     out = []
     for raw in items:
@@ -250,6 +281,9 @@ def filter_usable(items, used_ids):
         if not t["text"] or len(t["text"]) < MIN_NEWS_LENGTH:
             continue
         if t["type"] in ("retweet", "reply") or t["text"].startswith("RT @") or t["text"].startswith("@"):
+            continue
+        if not is_substantive(t["text"]):
+            print(f"  Skipping fortune cookie: \"{t['text'][:80]}...\"")
             continue
         out.append(t)
     out.sort(key=lambda x: x["likes"], reverse=True)
@@ -266,8 +300,8 @@ def validate_post(post):
         problems.append("em dash")
     if "\u2013" in post:
         problems.append("en dash")
-    if len(post) > 80 and "\n\n\n" not in post:
-        problems.append("missing visible blank lines (use \\n\\n\\n between sentences)")
+    if len(post) > 80 and "\n\n" not in post:
+        problems.append("missing line breaks (use \\n\\n between sentences)")
     lower = post.lower()
     for phrase in BANNED_SUBSTRINGS:
         if phrase in lower:
@@ -321,6 +355,10 @@ def generate_thread(source_tweet):
 
         # Validate main post
         ok_main, probs_main = validate_post(main)
+        # Additional check: hooks must never end with a full stop
+        if main.rstrip().endswith(".") and not main.rstrip().endswith("Show more"):
+            probs_main.append("hook ends with full stop (must end with colon, mid-sentence, or 'Show more')")
+            ok_main = False
 
         reply = data.get("reply", "")
         ok_reply, probs_reply = validate_post(reply)
