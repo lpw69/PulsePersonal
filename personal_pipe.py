@@ -70,11 +70,11 @@ def get_cta_link():
 def get_cta_lines():
     link = get_cta_link()
     return [
-        f"Btw, we build agentic distribution infrastructure for founders and operators. Your voice, every platform, compounding daily while you focus on the business.\n\nWe onboard 3 clients per quarter. See if you qualify: {link}",
-        f"Btw, the founders we work with went from invisible to impossible to ignore. Agentic content, every platform, every day. Their expertise finally reaching the people who need to hear it.\n\nApplications for Q3 are open: {link}",
-        f"P.S. We build agentic distribution for founders doing $1M+. Your voice and expertise turned into a compounding asset across X, LinkedIn, Threads. Inbound follows.\n\nWe're selective. See if you're a fit: {link}",
-        f"Btw, we build the distribution layer that makes founders the loudest voice in their market. Agentic, always-on, sounds like you because it learned from you.\n\nWe take on a handful per quarter. See if you qualify: {link}",
-        f"P.S. Agentic distribution is how the next generation of founders will compete. Not on product. On visibility. We build that layer.\n\nNot for everyone. Apply here: {link}",
+        f"Btw, we built content infrastructure that averages 1.5 million views a week. We build it for other founders too.\n\nWe onboard 3 clients per quarter. See if you qualify: {link}",
+        f"Btw, we build content infrastructure for founders. Our systems average 1.5M views a week across clients.\n\nApplications for Q3 are open: {link}",
+        f"P.S. We build content infrastructure that averages 1.5M views/week. If you're a founder doing $1M+ and your distribution is inconsistent, we should talk.\n\nSee if you qualify: {link}",
+        f"Btw, 1.5 million views a week. That's what our content infrastructure averages. We build it for founders who want distribution without the overhead.\n\nWe take on a handful per quarter: {link}",
+        f"P.S. We build content infrastructure for founders and athletes. 1.5M views/week average. Your voice, every platform, compounding daily.\n\nNot for everyone. Apply here: {link}",
     ]
 
 
