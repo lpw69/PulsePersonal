@@ -70,11 +70,11 @@ def get_cta_link():
 def get_cta_lines():
     link = get_cta_link()
     return [
-        f"Btw, we build AI-powered content engines for founders. Posts in your voice across X, LinkedIn, and Threads every day while you run the business.\n\nWe onboard 3 clients per quarter. See if you qualify: {link}",
-        f"Btw, we build agentic content systems that post 10x a day in your voice across every platform. You approve the voice once, the engine does the rest.\n\nApplications for Q3 are open: {link}",
-        f"P.S. We build content infrastructure for founders doing $1M+. AI-native, sounds like you, posts daily across X, LinkedIn, Threads while you sleep.\n\nWe're selective. See if you're a fit: {link}",
-        f"Btw, we build the content engine behind founders who post every day without spending a minute on it. Your voice, your platforms, fully automated.\n\nWe take on a handful per quarter. See if you qualify: {link}",
-        f"P.S. We build always-on content machines for founders and athletes. Your voice cloned into an engine that posts across every platform, every day.\n\nNot for everyone. Apply here: {link}",
+        f"Btw, we build agentic distribution infrastructure for founders and operators. Your voice, every platform, compounding daily while you focus on the business.\n\nWe onboard 3 clients per quarter. See if you qualify: {link}",
+        f"Btw, the founders we work with went from invisible to impossible to ignore. Agentic content, every platform, every day. Their expertise finally reaching the people who need to hear it.\n\nApplications for Q3 are open: {link}",
+        f"P.S. We build agentic distribution for founders doing $1M+. Your voice and expertise turned into a compounding asset across X, LinkedIn, Threads. Inbound follows.\n\nWe're selective. See if you're a fit: {link}",
+        f"Btw, we build the distribution layer that makes founders the loudest voice in their market. Agentic, always-on, sounds like you because it learned from you.\n\nWe take on a handful per quarter. See if you qualify: {link}",
+        f"P.S. Agentic distribution is how the next generation of founders will compete. Not on product. On visibility. We build that layer.\n\nNot for everyone. Apply here: {link}",
     ]
 
 
@@ -97,12 +97,11 @@ POST 1 (THE SCROLL-STOP): This post's ONLY job is to make someone stop scrolling
 
 POST 2 (THE INSIGHT): This post reveals what was withheld and connects it to a founder lesson.
 - FIRST: reveal the detail you withheld in post 1 (the quote, the action, the number).
-- THEN: connect it to a principle about distribution, brand, content, or audience building that makes a founder think "I need to be doing this."
-- The founder reading this should think: "That's exactly the kind of infrastructure I need. These guys can build this for me."
-- Every post 2 must contain a lesson that maps to building personal brand, content systems, or distribution infrastructure. If it doesn't connect, rewrite until it does.
+- THEN: connect it to a principle about visibility, distribution, personal brand, or audience building.
+- The insight should create a NEED in the reader's mind. They should finish post 2 thinking "I'm not doing enough of this" or "I'm falling behind on distribution." That feeling is what makes the CTA in post 3 feel like a solution, not a pitch.
 - Max 280 characters.
 
-POST 3 (THE CTA, only when instructed): The qualifying sell. Separate from the insight. Exclusive energy, not desperate energy.
+POST 3 (THE CTA, only when instructed): The qualifying sell. Addresses the need that post 2 created. Sells OUTCOMES (visibility, inbound leads, industry voice) never METHODS (AI, automation, engines, bots). Exclusive energy: "see if you qualify", "applications open", "not for everyone."
 
 WHAT A GOOD THREAD LOOKS LIKE (full examples)
 
@@ -140,10 +139,12 @@ Techniques that DON'T work (banned):
 - "Not X. Y." fragments in ANY form (see BANNED below)
 
 WHO LEWIS IS
-- Founder who builds agentic content systems for other founders
+- Founder who builds agentic distribution infrastructure for other founders and operators
 - Left defence consulting 18 months ago, built an agency billing in USD
 - Pragmatic, opinionated, anti-bullshit, not a guru
 - British but writes for a global audience. USD not GBP.
+- POSITIONING: "agentic distribution" is the term. Not "personal branding" (dated), not "social media management" (commoditised), not "automated posting" (sounds like a bot farm). Agentic distribution is next-gen infrastructure that compounds a founder's visibility across every platform.
+- NEVER say "automated", "bot", "AI-powered", or "personal brand/branding" publicly. "Agentic" is fine. "Distribution infrastructure" is fine. "Content engine" is fine in private but avoid in public CTAs.
 
 VOICE
 - Direct. Every sentence earns its place.
@@ -204,6 +205,14 @@ BANNED_SUBSTRINGS = [
     "here's why",
     "here's how",
     "here's what this means",
+    # Never describe the service as automation/bots publicly
+    "automated",
+    "ai-powered",
+    "ai powered",
+    "bot",
+    "ai-native",
+    "personal brand",
+    "personal branding",
 ]
 
 BANNED_REGEX_PATTERNS = [
