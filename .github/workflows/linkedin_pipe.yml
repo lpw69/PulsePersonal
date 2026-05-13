@@ -1,0 +1,24 @@
+name: LinkedIn Pipe
+on:
+  schedule:
+    - cron: "23 7 * * *"
+  workflow_dispatch:
+jobs:
+  run-linkedin-pipe:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install anthropic requests feedparser
+      - name: Run LinkedIn pipe
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
+          TYPEFULLY_API_KEY: ${{ secrets.TYPEFULLY_API_KEY }}
+          TYPEFULLY_PERSONAL_SOCIAL_SET_ID: ${{ secrets.TYPEFULLY_PERSONAL_SOCIAL_SET_ID }}
+        run: python linkedin_pipe.py
