@@ -55,12 +55,16 @@ RSS_FEEDS = [
     "https://hnrss.org/best?points=200",           # Hacker News top stories
     "https://www.wired.com/feed/tag/business/latest/rss",
     "https://fortune.com/feed/",
+    # Big news / politics / economics (narrative-angle fodder)
+    "https://feeds.bbci.co.uk/news/world/rss.xml",
+    "https://feeds.bbci.co.uk/news/business/rss.xml",
+    "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml",
 ]
 RSS_MAX_AGE_HOURS = 24
 
 # CTA config
 CTA_EVERY_N = 1  # Every post gets a CTA. Lewis reviews drafts so can remove if it doesn't fit.
-TYPEFORM_URL = ""  # set this once your typeform is live
+TYPEFORM_URL = "https://calendly.com/lewis-underdog-ghostwriting/udg-discovery-call"
 
 def get_cta_link():
     if TYPEFORM_URL:
@@ -87,13 +91,25 @@ THE FORMAT
 Every output is TWO posts (or THREE when a CTA is provided):
 
 POST 1 (THE SCROLL-STOP): This post's ONLY job is to make someone stop scrolling and click into the thread.
-- Lead with DRAMA. "HOLY SHIT.", "This literally just changed everything.", "I can't believe [person] just said this."
-- Hyperbole is not only allowed, it's required. You're competing with 500 other posts in someone's feed. Understatement gets scrolled past.
-- CAPITALISE the dramatic opener when it warrants it.
-- WITHHOLD THE INTERESTING DETAIL. If someone said something wild, DO NOT reveal what they said in post 1. Tease it. "What he said next stunned the market:" or "His one-word response explains everything:" The detail IS the open loop. Save it for post 2.
-- If someone did something interesting, DO NOT describe exactly what they did. "Elon just gave his mum something for Mother's Day that made Dogecoin spike 8%" is better than "Elon gifted his mum a single Dogecoin."
-- End with an open loop. Colon, mid-sentence, or "Show more". NEVER a full stop.
-- Max 280 characters.
+
+HOOK CHECKLIST (every hook must pass ALL of these):
+- First line is super heavy-hitting. Must incite insane curiosity.
+- Contains an extreme, hyperbolic statement that you can back up in post 2. Either factually verifiable OR not falsifiable (subjective claims like "this might be the biggest shift in marketing since the internet").
+- Written at a 5th-grade reading level. Zero ambiguity. Everyone understands it instantly.
+- Promise to the reader is crystal clear. They know what they're getting from the thread.
+- Broad appeal. As many people as possible should care, narrowing as they read.
+- Genuinely novel and interesting. Passes the gut check: would YOU stop scrolling for this?
+- As specific as possible. Numbers, names, dollar amounts. No generic statements.
+- Big open loop to encourage thread opening. Colon, mid-sentence, or "Show more" (~1 in 3).
+- CAPITALISE dramatic openers when warranted. "HOLY SHIT.", "JUST IN.", "THIS CHANGES EVERYTHING."
+
+WITHHOLD THE INTERESTING DETAIL. If someone said something wild, DO NOT reveal what they said in post 1. Tease it. "What he said next stunned the market:" or "His one-word response explains everything:" The detail IS the open loop. Save it for post 2.
+
+If someone did something interesting, DO NOT describe exactly what they did. "Elon just gave his mum something for Mother's Day that made Dogecoin spike 8%" is better than "Elon gifted his mum a single Dogecoin."
+
+HOOK MUST NEVER END WITH A FULL STOP. A full stop signals "I'm done." Hooks end with colons, mid-sentence trails, or "Show more". If it ends in a period, it fails.
+
+Max 280 characters.
 
 POST 2 (THE INSIGHT): This post reveals what was withheld and connects it to a founder lesson.
 - FIRST: reveal the detail you withheld in post 1 (the quote, the action, the number).
@@ -118,6 +134,18 @@ Post 1: "Michael Saylor just mass-bought another $1.5B in Bitcoin.\\n\\nHis enti
 Post 2: "'Conviction.'\\n\\nSame message, same platforms, every single day for four years. The most boring content strategy imaginable and it built a $70B brand.\\n\\nConsistency at scale is the unfair advantage nobody wants to hear about."
 
 WITHHOLDING IS THE KEY. In every example above, post 1 teases what was said or done. Post 2 reveals it. This is non-negotiable.
+
+NEWS AND POLITICS ANGLE
+
+Not every source will be a founder tweet. Some will be breaking news, political events, or economic stories. Your job is to find the NARRATIVE or INFLUENCE angle.
+
+The question to ask: "What does this tell us about controlling the story, building visibility, or owning distribution?"
+
+EXAMPLE:
+Post 1: "JUST IN: NYC Mayor just announced he cut a $12 billion budget deficit to zero.\n\nOne announcement. One sentence. And he just owned the entire narrative of the biggest city in America.\n\nThe part nobody's talking about is how he framed it:"
+Post 2: "He didn't list 400 line items. He gave people one number: zero.\n\nThat's what great distribution looks like. One message, repeated, impossible to misunderstand.\n\nFounders overcomplicating their story should be taking notes."
+
+The news itself doesn't have to be about content or distribution. The ANGLE you take on it does.
 
 THE OPEN LOOP
 
@@ -163,18 +191,15 @@ NON-NEGOTIABLE RULES
 6. USD not GBP.
 7. NO em dashes, en dashes, hashtags.
 
-BANNED PHRASES AND PATTERNS
-"Most people think", "Here's the thing", "The real play", "Plot twist", "Real talk", "The bottom line", "This changes everything", "Imagine if", "What if I told you", "Game changer", "But what's actually interesting", "But here's the thing", "Let me explain", "Here's why that matters", "Here's why", "Here's how", "Thread", fragment-then-explanation, "mate", trailing ellipsis.
+THE "NOT" BAN. This is the single most common AI writing pattern. ALL of these are banned and the validator will auto-reject them:
+- "Not as X. As Y." / "Not because X. Because Y." / "Not the goal." / "Not a [thing]. Not a [thing]."
+- "not X, not Y, but Z" in the same sentence
+- "It's not X. It's Y." / "That's not X. That's Y." / "isn't about X. It's about Y."
+- ANY sentence that starts with "Not" and ends with a full stop. Every single one. No exceptions.
+If you find yourself writing "Not [something]." as a sentence, STOP. You are writing an AI antipattern. Rewrite the entire paragraph as a flowing sentence that makes the same point without the negation-then-correction structure.
 
-THE "NOT X. Y." BAN. This is the single most common AI antipattern and it appears in dozens of forms. ALL of these are banned:
-- "Not as a tech CEO. As leverage." (Not as X. As Y.)
-- "Not because it's valuable. Because of what it signals." (Not because X. Because Y.)
-- "Not the goal." followed by the real goal (Not X. Implying Y.)
-- "It's not X. It's Y." / "That's not X. That's Y." / "This isn't X. It's Y."
-- "isn't about X. It's about Y."
-- "It's not. It's about Y."
-- Any two-sentence structure where the first sentence negates and the second sentence provides the real answer.
-If you find yourself writing "Not [something]." as a standalone sentence, STOP. Rewrite the whole paragraph. Combine the negation and the real point into a single flowing sentence instead.
+BANNED PHRASES
+"Most people think", "Here's the thing", "The real play", "Plot twist", "Real talk", "The bottom line", "This changes everything", "Imagine if", "What if I told you", "Game changer", "But what's actually interesting", "But here's the thing", "Let me explain", "Here's why that matters", "Here's why", "Here's how", "Thread", fragment-then-explanation, "mate", trailing ellipsis.
 
 OUTPUT
 Valid JSON. No code fences.
@@ -245,6 +270,12 @@ BANNED_REGEX_PATTERNS = [
     (r"\bnot\s+a\s+[\w\s]{2,25}[.]\s+not\s+a\s+", "Not a X. Not a Y. consecutive negation"),
     # "X hide Y. Z expose Y." parallel structure
     (r"\b\w[\w\s]{2,20}(hide|conceal|mask|obscure)\w*\s+.{2,20}[.]\s+\w[\w\s]{2,20}(expose|reveal|show|uncover)", "parallel hide/expose structure"),
+    # NUCLEAR: "Not [anything]." as a standalone sentence under 50 chars (catches ALL Not-fragment openers)
+    (r"(?:^|\n\n)Not\s+[\w\s,']{2,45}[.]", "standalone 'Not...' sentence fragment (rewrite as flowing sentence)"),
+    # "Not X, not Y" in the same sentence
+    (r"\bnot\s+[\w\s]{2,20},\s*not\s+[\w\s]{2,20}", "not X, not Y in same sentence"),
+    # "Not X. But Y." / "Not X. Just Y." / "Not X. Only Y."
+    (r"\bnot\s+[\w\s]{2,30}[.]\s+(but|just|only|simply|rather)\s+", "Not X. But/Just/Only Y."),
 ]
 
 
@@ -615,6 +646,11 @@ def main():
 
         main_post, reply_post = result
         cta = random.choice(get_cta_lines()) if use_cta else None
+
+        # Append source tweet URL to main post for embed (tweets only, not RSS)
+        source_url = source.get("url", "")
+        if source_url and source.get("type") != "rss" and ("twitter.com" in source_url or "x.com" in source_url):
+            main_post = main_post.rstrip() + "\n\n" + source_url
 
         print(f"\n  Post 1 ({len(main_post)} chars): {main_post.replace(chr(10), ' ')[:80]}...")
         print(f"  Post 2 ({len(reply_post)} chars): {reply_post.replace(chr(10), ' ')[:80]}...")
